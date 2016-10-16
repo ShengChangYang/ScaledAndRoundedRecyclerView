@@ -1,6 +1,8 @@
 package com.scy.scaledandroundedrecyclerview;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 	private static final String TAG = "RecyclerViewAdapter";
@@ -21,8 +24,12 @@ final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter
 	}
 
 	private void generateItems() {
-		for (int i = 0; i < 128; i++) {
-			items.add(new Item());
+		List<String> colorCodes = getColorCodes();
+		for (int i = 0; i < 16; i++) {
+			for (String colorCode : colorCodes) {
+				items.add(new Item(colorCode));
+			}
+			Collections.reverse(colorCodes);
 		}
 	}
 
@@ -43,12 +50,10 @@ final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter
 	}
 
 	private static final class Item {
-		private static final Random RANDOM = new Random();
-
 		private final int color;
 
-		Item() {
-			color = RANDOM.nextInt() | 0xFF000000;
+		Item(@NonNull String colorCode) {
+			color = Color.parseColor(colorCode);
 		}
 	}
 
@@ -94,6 +99,21 @@ final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter
 				}
 			}
 		};
+	}
+
+	/**
+	 * Gradient color from RGB(0, 242, 235) to RGB(77, 88, 223).
+	 */
+	private static List<String> getColorCodes() {
+		final int count = 8;
+		String[] baseColorCodes = new String[count];
+		for (int i = 0; i < count; i++) {
+			baseColorCodes[i] = "#"
+				+ String.format("%02X", (int) Math.floor(((double) 77 - 0) * i / count + 0))
+				+ String.format("%02X", (int) Math.floor(((double) 88 - 242) * i / count + 242))
+				+ String.format("%02X", (int) Math.floor(((double) 223 - 235) * i / count + 235));
+		}
+		return Arrays.asList(baseColorCodes);
 	}
 
 }
