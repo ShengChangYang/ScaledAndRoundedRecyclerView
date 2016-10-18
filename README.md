@@ -1,7 +1,10 @@
 # ScaledAndRoundedRecyclerView
 Use LayoutManager and BitmapShader to scale and shape the item of RecyclerView.
 
-###License
+### Screenshot
+<img src="sample.gif"/>
+
+### License
 ```license
    Copyright 2016 Sheng-Chang Yang
 
